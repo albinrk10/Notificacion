@@ -20,28 +20,37 @@ class MyApp extends StatelessWidget {
           title: const Text('Material App Bar'),
         ),
         body: const PaginaPrincipal(),
-        
       ),
     );
   }
 }
 
 class PaginaPrincipal extends StatelessWidget {
-  const PaginaPrincipal({
-    super.key,
-  });
+  const PaginaPrincipal({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(
-          onPressed: () {
-            // Aquí debemos mostrar la notificación
-            showNotificacion1();
-          },
-          child: const Text('Mostrar la notificación')),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              // Mostrar la notificación simple
+              showNotificacion1();
+            },
+            child: const Text('Mostrar notificación simple'),
+          ),
+          const SizedBox(height: 20), // Espacio entre los botones
+          ElevatedButton(
+            onPressed: () {
+              // Mostrar la notificación con imagen
+              showNotificacionConImagen();
+            },
+            child: const Text('Mostrar notificación con imagen'),
+          ),
+        ],
+      ),
     );
-    
   }
-  
 }

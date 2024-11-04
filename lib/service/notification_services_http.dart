@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-//con dio
+//con htpps
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -20,7 +20,6 @@ Future<void> initNotifications() async {
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
-
 Future<void> showNotificacion1() async {
   const AndroidNotificationDetails androidNotificationDetails =
       AndroidNotificationDetails(
@@ -42,23 +41,22 @@ Future<void> showNotificacion1() async {
   );
 }
 
-
 Future<void> showNotificacionConImagen() async {
   const String imageUrl =
       'https://img.autoabc.lv/Nissan-Tiida/Nissan-Tiida_2007_Sedans_17111110541_1_m.jpg';
 
-  // Descargar la imagen usando `dio`
-  final Dio dio = Dio();
+  // Descargar la imagen y guardarla en el almacenamiento local
+  final http.Response response = await http.get(Uri.parse(imageUrl));
   final Directory directory = await getApplicationDocumentsDirectory();
   final String filePath = '${directory.path}/imagen_notificacion.jpg';
-  await dio.download(imageUrl, filePath);
+  final File file = File(filePath);
+  await file.writeAsBytes(response.bodyBytes);
 
-  // Crear el estilo de notificación con imagen
   final BigPictureStyleInformation bigPictureStyleInformation =
       BigPictureStyleInformation(
     FilePathAndroidBitmap(filePath),
     contentTitle: 'Notificación con Imagen',
-    summaryText: 'Esta notificación incluye una imagen desde la URL',
+    summaryText: 'Esta notificación incluye una imagen de internet',
   );
 
   final AndroidNotificationDetails androidNotificationDetails =
@@ -81,4 +79,3 @@ Future<void> showNotificacionConImagen() async {
     notificationDetails,
   );
 }
-
